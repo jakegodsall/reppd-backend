@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface CompetencyService {
     List<CompetencyDto> getAllCompetencies();
-    CompetencyDto createCompetencyDto(CompetencyDto competencyDto);
+    CompetencyDto createCompetency(CompetencyDto competencyDto);
     CompetencyDto getCompetencyById(Long id);
-    CompetencyDto updateCompetencyDtoById(CompetencyDto competencyDto, Long id);
-    void deleteCompetencyDtoById(Long id);
+    CompetencyDto updateCompetencyById(CompetencyDto competencyDto, Long id);
+    void deleteCompetencyById(Long id);
 }

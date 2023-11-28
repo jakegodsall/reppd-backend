@@ -28,7 +28,7 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
-    public CompetencyDto createCompetencyDto(CompetencyDto competencyDto) {
+    public CompetencyDto createCompetency(CompetencyDto competencyDto) {
         // Map CompetencyDTO to Competency
         Competency competency = competencyMapper.competencyDtoToCompetency(competencyDto);
 
@@ -54,7 +54,7 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
-    public CompetencyDto updateCompetencyDtoById(CompetencyDto competencyDto, Long id) {
+    public CompetencyDto updateCompetencyById(CompetencyDto competencyDto, Long id) {
         // Get the Competency from the database
         Competency competency = competencyRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Competency", "id", id)
@@ -69,7 +69,7 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
-    public void deleteCompetencyDtoById(Long id) {
+    public void deleteCompetencyById(Long id) {
         // Get the Competency from the database
         Competency competency = competencyRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Competency", "id", id)
