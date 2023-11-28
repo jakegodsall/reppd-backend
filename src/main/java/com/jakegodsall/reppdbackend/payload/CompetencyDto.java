@@ -12,4 +12,5 @@ public class CompetencyDto {
     private Long id;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+    private String name;
 }

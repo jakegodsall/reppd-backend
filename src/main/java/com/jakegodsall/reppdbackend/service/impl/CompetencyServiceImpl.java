@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,7 +29,19 @@ public class CompetencyServiceImpl implements CompetencyService {
 
     @Override
     public CompetencyDto createCompetencyDto(CompetencyDto competencyDto) {
-        return null;
+        // Map CompetencyDTO to Competency
+        Competency competency = competencyMapper.competencyDtoToCompetency(competencyDto);
+
+        // Update fields
+        LocalDateTime now = LocalDateTime.now();
+        competency.setCreatedDate(now);
+        competency.setLastModifiedDate(now);
+
+        // Save in the database
+        Competency savedCompetency = competencyRepository.save(competency);
+
+        // Map Competency to CompetencyDTO and return
+        return competencyMapper.competencyToCompetencyDto(savedCompetency);
     }
 
     @Override
@@ -42,11 +55,26 @@ public class CompetencyServiceImpl implements CompetencyService {
 
     @Override
     public CompetencyDto updateCompetencyDtoById(CompetencyDto competencyDto, Long id) {
-        return null;
+        // Get the Competency from the database
+        Competency competency = competencyRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Competency", "id", id)
+        );
+
+        // Update fields
+        competency.setLastModifiedDate(LocalDateTime.now());
+        competency.setName(competencyDto.getName());
+
+        // Map Competency to CompetencyDTO and return
+        return competencyMapper.competencyToCompetencyDto(competency);
     }
 
     @Override
     public void deleteCompetencyDtoById(Long id) {
-
+        // Get the Competency from the database
+        Competency competency = competencyRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Competency", "id", id)
+        );
+        // Delete it
+        competencyRepository.delete(competency);
     }
 }
