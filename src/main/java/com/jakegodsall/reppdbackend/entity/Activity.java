@@ -17,6 +17,7 @@ import lombok.*;
 public class Activity extends BaseEntity {
     private String name;
     @ManyToOne
+
     @JoinColumn(name = "competency_id")
     private Competency competency;
 }
