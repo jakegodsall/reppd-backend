@@ -1,7 +1,7 @@
-package com.jakegodsall.reppdbackend.service.impl;
+package com.jakegodsall.reppdbackend.csvservice.impl;
 
-import com.jakegodsall.reppdbackend.payload.UserCSVRecord;
-import com.jakegodsall.reppdbackend.service.UserCSVService;
+import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
+import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.stereotype.Service;
 

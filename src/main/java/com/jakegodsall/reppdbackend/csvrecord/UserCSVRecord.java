@@ -1,4 +1,4 @@
-package com.jakegodsall.reppdbackend.payload;
+package com.jakegodsall.reppdbackend.csvrecord;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.*;

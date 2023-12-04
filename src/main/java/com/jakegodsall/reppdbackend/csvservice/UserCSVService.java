@@ -1,6 +1,6 @@
-package com.jakegodsall.reppdbackend.service;
+package com.jakegodsall.reppdbackend.csvservice;
 
-import com.jakegodsall.reppdbackend.payload.UserCSVRecord;
+import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;

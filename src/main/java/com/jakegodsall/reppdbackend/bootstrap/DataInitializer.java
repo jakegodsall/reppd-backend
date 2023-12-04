@@ -1,15 +1,14 @@
 package com.jakegodsall.reppdbackend.bootstrap;
 
 import com.jakegodsall.reppdbackend.entity.User;
-import com.jakegodsall.reppdbackend.payload.UserCSVRecord;
+import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
 import com.jakegodsall.reppdbackend.repository.ActivityRepository;
 import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
 import com.jakegodsall.reppdbackend.repository.LogRepository;
 import com.jakegodsall.reppdbackend.repository.UserRepository;
-import com.jakegodsall.reppdbackend.service.UserCSVService;
+import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
