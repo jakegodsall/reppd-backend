@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor
 public class CompetencyServiceImpl implements CompetencyService {
 
     private CompetencyRepository competencyRepository;

@@ -5,6 +5,7 @@ import com.jakegodsall.reppdbackend.service.CompetencyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,7 +27,11 @@ public class CompetencyController {
     }
 
     @PostMapping(API_V1_LIST)
-    public ResponseEntity<CompetencyDto> createCompetency(@RequestBody CompetencyDto competencyDto) {
+    public ResponseEntity<?> createCompetency(
+            @RequestBody CompetencyDto competencyDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError());
+        }
         CompetencyDto createdCompetency = competencyService.createCompetency(competencyDto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
