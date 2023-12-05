@@ -16,8 +16,8 @@ import lombok.*;
 @Table(name = "activity")
 public class Activity extends BaseEntity {
     private String name;
-    @ManyToOne
 
+    @ManyToOne
     @JoinColumn(name = "competency_id")
     private Competency competency;
 }

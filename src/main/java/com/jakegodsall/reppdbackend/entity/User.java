@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     private String password;
 
     @OneToMany(mappedBy = "user")
+
     private Set<Competency> competencies = new HashSet<>();
 
     @Builder

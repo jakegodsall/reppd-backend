@@ -28,6 +28,12 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
+    public List<CompetencyDto> getAllCompetenciesForUser(Long userId) {
+        return competencyRepository.findByUserId(userId);
+    }
+
+
+    @Override
     public CompetencyDto createCompetency(CompetencyDto competencyDto) {
         // Map CompetencyDTO to Competency
         Competency competency = competencyMapper.competencyDtoToCompetency(competencyDto);
@@ -77,4 +83,6 @@ public class CompetencyServiceImpl implements CompetencyService {
         // Delete it
         competencyRepository.delete(competency);
     }
+
+
 }
