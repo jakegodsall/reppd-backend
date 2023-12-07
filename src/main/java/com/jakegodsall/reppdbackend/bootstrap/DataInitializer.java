@@ -4,15 +4,13 @@ import com.jakegodsall.reppdbackend.entity.auth.Authority;
 import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
 import com.jakegodsall.reppdbackend.exceptions.ResourceNotFoundException;
-import com.jakegodsall.reppdbackend.repository.ActivityRepository;
-import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
-import com.jakegodsall.reppdbackend.repository.LogRepository;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -25,15 +23,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Component
 public class DataInitializer implements CommandLineRunner {
+    private final UserRepository userRepository;
+    private final UserCSVService userCSVService;
+    private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private ActivityRepository activityRepository;
-    private CompetencyRepository competencyRepository;
-    private LogRepository logRepository;
-    private UserRepository userRepository;
-    private UserCSVService userCSVService;
-    private AuthorityRepository authorityRepository;
-
-    @Transactional
     @Override
     public void run(String... args) throws Exception {
         setAuthorities();
@@ -42,8 +36,8 @@ public class DataInitializer implements CommandLineRunner {
 
     private void setAuthorities() {
         if (authorityRepository.count() == 0) {
-            authorityRepository.save(new Authority("USER"));
-            authorityRepository.save(new Authority("ADMIN"));
+            authorityRepository.save(new Authority("ROLE_USER"));
+            authorityRepository.save(new Authority("ROLE_ADMIN"));
         }
     }
 
@@ -55,7 +49,7 @@ public class DataInitializer implements CommandLineRunner {
 
             recs.forEach(userCSVRecord -> {
                 Set<Authority> authorities = new HashSet<>();
-                authorities.add(authorityRepository.findByRole("USER").orElseThrow(
+                authorities.add(authorityRepository.findByRole("ROLE_ADMIN").orElseThrow(
                         () -> new ResourceNotFoundException("Authority", "role", 1L)
                 ));
 
@@ -64,9 +58,11 @@ public class DataInitializer implements CommandLineRunner {
                         .firstName(userCSVRecord.getFirstName())
                         .lastName(userCSVRecord.getLastName())
                         .email(userCSVRecord.getEmail())
-                        .password(userCSVRecord.getPassword())
+                        .password(passwordEncoder.encode(userCSVRecord.getPassword()))
                         .authorities(authorities)
                         .build());
+
+                System.out.println("User: " + userCSVRecord.getUsername() + " added.");
             });
         }
     }

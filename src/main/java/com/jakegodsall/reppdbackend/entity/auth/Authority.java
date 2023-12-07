@@ -21,10 +21,7 @@ public class Authority extends BaseEntity {
 
     private String role;
 
-    @ManyToMany
-    @JoinTable(name = "user_authority",
-        joinColumns = @JoinColumn(name = "authority_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "authorities", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     public Authority(String role) {

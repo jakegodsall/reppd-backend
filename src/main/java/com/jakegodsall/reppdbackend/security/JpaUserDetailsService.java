@@ -5,6 +5,9 @@ import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +26,6 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,9 +36,9 @@ public class JpaUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .accountExpired(user.getAccountNonExpired())
-                .credentialsExpired(user.getCredentialsNonExpired())
-                .accountLocked(user.getAccountNotLocked())
+                .accountExpired(!user.getAccountNonExpired())
+                .credentialsExpired(!user.getCredentialsNonExpired())
+                .accountLocked(!user.getAccountNotLocked())
                 .authorities(convertToSpringAuthorities(user.getAuthorities()))
                 .build();
     }
