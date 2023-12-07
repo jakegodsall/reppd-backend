@@ -4,6 +4,7 @@ import com.jakegodsall.reppdbackend.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,4 +27,7 @@ public class Authority extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
+    public Authority(String role) {
+        this.role = role;
+    }
 }
