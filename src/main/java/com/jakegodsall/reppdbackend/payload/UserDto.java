@@ -18,6 +18,8 @@ public class UserDto {
 
     private Long version;
 
+    private String username;
+
     private String firstName;
 
     private String lastName;

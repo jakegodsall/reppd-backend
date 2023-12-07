@@ -7,6 +7,10 @@ import lombok.*;
 @Getter @Setter
 @EqualsAndHashCode @ToString
 public class UserCSVRecord {
+
+    @CsvBindByName
+    private String username;
+
     @CsvBindByName(column = "first_name")
     private String firstName;
 

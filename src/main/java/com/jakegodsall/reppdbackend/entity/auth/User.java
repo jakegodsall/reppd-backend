@@ -20,6 +20,8 @@ import java.util.Set;
 @Table(name = "user")
 public class User extends BaseEntity {
 
+    private String username;
+
     private String firstName;
 
     private String lastName;

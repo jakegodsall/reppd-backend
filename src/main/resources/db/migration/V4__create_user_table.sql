@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS user (
     created_date TIMESTAMP,
     last_modified_date TIMESTAMP,
     version BIGINT DEFAULT 0,
+    username VARCHAR(100) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,

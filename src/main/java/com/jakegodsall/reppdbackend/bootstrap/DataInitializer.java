@@ -5,7 +5,7 @@ import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
 import com.jakegodsall.reppdbackend.repository.ActivityRepository;
 import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
 import com.jakegodsall.reppdbackend.repository.LogRepository;
-import com.jakegodsall.reppdbackend.repository.UserRepository;
+import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -41,6 +41,7 @@ public class DataInitializer implements CommandLineRunner {
 
             recs.forEach(userCSVRecord -> {
                 userRepository.save(User.builder()
+                        .username(userCSVRecord.getUsername())
                         .firstName(userCSVRecord.getFirstName())
                         .lastName(userCSVRecord.getLastName())
                         .email(userCSVRecord.getEmail())

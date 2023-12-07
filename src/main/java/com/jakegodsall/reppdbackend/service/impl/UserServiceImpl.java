@@ -4,7 +4,7 @@ import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.exceptions.ResourceNotFoundException;
 import com.jakegodsall.reppdbackend.mappers.UserMapper;
 import com.jakegodsall.reppdbackend.payload.UserDto;
-import com.jakegodsall.reppdbackend.repository.UserRepository;
+import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import com.jakegodsall.reppdbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

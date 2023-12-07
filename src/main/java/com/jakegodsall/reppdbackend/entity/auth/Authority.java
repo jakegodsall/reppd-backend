@@ -17,7 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "authority")
 public class Authority extends BaseEntity {
-    private String name;
+
+    private String role;
 
     @ManyToMany
     @JoinTable(name = "user_authority",
