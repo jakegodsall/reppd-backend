@@ -12,8 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @Builder
 @Entity
 @Table(name = "authority")
@@ -21,10 +19,16 @@ public class Authority extends BaseEntity {
 
     private String role;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     public Authority(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return role;
     }
 }

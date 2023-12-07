@@ -31,13 +31,41 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         setAuthorities();
+        createAdminUser();
         loadUsersFromCsv();
     }
 
     private void setAuthorities() {
         if (authorityRepository.count() == 0) {
-            authorityRepository.save(new Authority("ROLE_USER"));
-            authorityRepository.save(new Authority("ROLE_ADMIN"));
+            authorityRepository.save(new Authority("USER"));
+            authorityRepository.save(new Authority("ADMIN"));
+        }
+    }
+
+    private void createAdminUser() {
+        if (userRepository.count() < 10) {
+            Set<Authority> authorities = new HashSet<>();
+            authorities.add(authorityRepository.findByRole("ADMIN").orElseThrow(
+                    () -> new ResourceNotFoundException("Authority", "role", 1L)
+            ));
+            User admin = User.builder()
+                    .username("admin")
+                    .firstName("adminname")
+                    .lastName("adminlastname")
+                    .email("admin_email@email.com")
+                    .password(passwordEncoder.encode("password"))
+                    .build();
+
+            for (Authority authority : authorities) {
+                admin.addAuthority(authority);
+            }
+
+            userRepository.save(admin);
+
+            System.out.println("Admin user added");
+
+            System.out.println("User: " + admin.getUsername());
+            System.out.println("Authorities: " + admin.getAuthorities() );
         }
     }
 
@@ -49,20 +77,26 @@ public class DataInitializer implements CommandLineRunner {
 
             recs.forEach(userCSVRecord -> {
                 Set<Authority> authorities = new HashSet<>();
-                authorities.add(authorityRepository.findByRole("ROLE_ADMIN").orElseThrow(
+                authorities.add(authorityRepository.findByRole("USER").orElseThrow(
                         () -> new ResourceNotFoundException("Authority", "role", 1L)
                 ));
 
-                userRepository.save(User.builder()
+                User user = User.builder()
                         .username(userCSVRecord.getUsername())
                         .firstName(userCSVRecord.getFirstName())
                         .lastName(userCSVRecord.getLastName())
                         .email(userCSVRecord.getEmail())
                         .password(passwordEncoder.encode(userCSVRecord.getPassword()))
-                        .authorities(authorities)
-                        .build());
+                        .build();
 
-                System.out.println("User: " + userCSVRecord.getUsername() + " added.");
+                for (Authority authority : authorities) {
+                    user.addAuthority(authority);
+                }
+
+                userRepository.save(user);
+
+                System.out.println("User: " + user.getUsername());
+                System.out.println("Authorities: " + user.getAuthorities() );
             });
         }
     }

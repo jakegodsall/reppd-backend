@@ -2,6 +2,7 @@ package com.jakegodsall.reppdbackend.entity.auth;
 
 import com.jakegodsall.reppdbackend.entity.BaseEntity;
 import com.jakegodsall.reppdbackend.entity.Competency;
+import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,8 +14,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @Entity
 @Builder
 @Table(name = "user")
@@ -51,5 +50,12 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private Set<Competency> competencies = new HashSet<>();
+
+    public void addAuthority(Authority authority) {
+        if (authorities == null)
+            authorities = new HashSet<>();
+        authorities.add(authority);
+        authority.getUsers().add(this);
+    }
 
 }

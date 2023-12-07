@@ -21,8 +21,8 @@ public class SecurityConfig {
 
         return http.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/api/v1/users").authenticated()
-//                                 .requestMatchers("/api/v1/**").permitAll()
+                        authorize.requestMatchers("/api/v1/users").hasAuthority("ADMIN")
+                                   .requestMatchers("/api/v1/**").authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
                 .formLogin(Customizer.withDefaults())
@@ -30,8 +30,6 @@ public class SecurityConfig {
                 .build();
 
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
