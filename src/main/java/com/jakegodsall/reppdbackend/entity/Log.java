@@ -1,5 +1,6 @@
 package com.jakegodsall.reppdbackend.entity;
 
+import com.jakegodsall.reppdbackend.entity.auth.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

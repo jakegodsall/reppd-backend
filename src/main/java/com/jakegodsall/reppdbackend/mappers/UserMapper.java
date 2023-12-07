@@ -1,6 +1,6 @@
 package com.jakegodsall.reppdbackend.mappers;
 
-import com.jakegodsall.reppdbackend.entity.User;
+import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.payload.UserDto;
 import org.mapstruct.Mapper;
 

@@ -1,6 +1,6 @@
 package com.jakegodsall.reppdbackend.service.impl;
 
-import com.jakegodsall.reppdbackend.entity.User;
+import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.exceptions.ResourceNotFoundException;
 import com.jakegodsall.reppdbackend.mappers.UserMapper;
 import com.jakegodsall.reppdbackend.payload.UserDto;

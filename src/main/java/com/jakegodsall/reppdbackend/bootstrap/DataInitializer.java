@@ -1,6 +1,6 @@
 package com.jakegodsall.reppdbackend.bootstrap;
 
-import com.jakegodsall.reppdbackend.entity.User;
+import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
 import com.jakegodsall.reppdbackend.repository.ActivityRepository;
 import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
