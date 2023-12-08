@@ -58,4 +58,11 @@ public class User extends BaseEntity {
         authority.getUsers().add(this);
     }
 
+    public void addCompetency(Competency competency) {
+        if (competencies == null)
+                competencies = new HashSet<>();
+        competencies.add(competency);
+        competency.setUser(this);
+    }
+
 }

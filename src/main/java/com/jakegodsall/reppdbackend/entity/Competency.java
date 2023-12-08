@@ -9,8 +9,9 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
-@EqualsAndHashCode @ToString
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "competency")
 public class Competency extends BaseEntity {
@@ -23,4 +24,9 @@ public class Competency extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

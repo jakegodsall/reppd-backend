@@ -1,5 +1,6 @@
 package com.jakegodsall.reppdbackend.payload;
 
+import com.jakegodsall.reppdbackend.entity.auth.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,4 +14,5 @@ public class CompetencyDto {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private String name;
+    private User user;
 }
