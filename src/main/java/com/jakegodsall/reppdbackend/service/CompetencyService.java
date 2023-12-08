@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CompetencyService {
     List<CompetencyDto> getAllCompetencies();
-    public List<CompetencyDto> getAllCompetenciesForUser(Long userId);
+    List<CompetencyDto> getAllCompetenciesForUser(Long userId);
     CompetencyDto createCompetency(CompetencyDto competencyDto);
     CompetencyDto getCompetencyById(Long id);
     CompetencyDto updateCompetencyById(CompetencyDto competencyDto, Long id);

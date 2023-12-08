@@ -17,6 +17,8 @@ import java.util.List;
 public class CompetencyController {
     private static final String API_V1_LIST = "/api/v1/competencies";
     private static final String API_V1_ID = "/api/v1/competencies/{id}";
+    private static final String API_V1_USER_LIST = "/api/v1/users/{userId}/competencies";
+    private static final String API_V1_USER_LIST_ID = API_V1_USER_LIST + "/{competencyId}";
 
     private final CompetencyService competencyService;
 
@@ -24,6 +26,12 @@ public class CompetencyController {
     public ResponseEntity<List<CompetencyDto>> getAllCompetencies() {
         List<CompetencyDto> competencyDtos = competencyService.getAllCompetencies();
         return new ResponseEntity<>(competencyDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(API_V1_USER_LIST)
+    public ResponseEntity<List<CompetencyDto>> getAllCompetenciesForUser(@PathVariable Long userId) {
+        List<CompetencyDto> usersCompetencies = competencyService.getAllCompetenciesForUser(userId);
+        return new ResponseEntity<>(usersCompetencies, HttpStatus.OK);
     }
 
     @PostMapping(API_V1_LIST)
