@@ -48,7 +48,7 @@ public class User extends BaseEntity {
     private Boolean accountNotLocked = true;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Competency> competencies = new HashSet<>();
 
     public void addAuthority(Authority authority) {

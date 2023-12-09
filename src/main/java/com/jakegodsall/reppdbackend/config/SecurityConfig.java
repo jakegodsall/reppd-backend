@@ -1,4 +1,4 @@
-package com.jakegodsall.reppdbackend.security;
+package com.jakegodsall.reppdbackend.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @AllArgsConstructor
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
 
@@ -21,7 +22,7 @@ public class SecurityConfig {
 
         return http.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/api/v1/users**").hasAuthority("ADMIN")
+                        authorize.requestMatchers("/api/v1/users**").hasRole("ADMIN")
                                    .requestMatchers("/api/v1/**").authenticated()
                 )
                 .csrf(csrf -> csrf.disable())

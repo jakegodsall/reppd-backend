@@ -4,6 +4,7 @@ import com.jakegodsall.reppdbackend.entity.Competency;
 import com.jakegodsall.reppdbackend.entity.auth.Authority;
 import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.csvrecord.UserCSVRecord;
+import com.jakegodsall.reppdbackend.exceptions.AuthorityNotFoundException;
 import com.jakegodsall.reppdbackend.exceptions.ResourceNotFoundException;
 import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
@@ -29,6 +30,7 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final CompetencyRepository competencyRepository;
 
+
     @Override
     public void run(String... args) throws Exception {
         setAuthorities();
@@ -37,19 +39,18 @@ public class DataInitializer implements CommandLineRunner {
     }
 
 
-
     private void setAuthorities() {
         if (authorityRepository.count() == 0) {
-            authorityRepository.save(new Authority("USER"));
-            authorityRepository.save(new Authority("ADMIN"));
+            authorityRepository.save(new Authority("ROLE_USER"));
+            authorityRepository.save(new Authority("ROLE_ADMIN"));
         }
     }
 
     private void createAdminUser() {
-        if (userRepository.count() < 10) {
+        if (userRepository.count() < 2) {
             Set<Authority> authorities = new HashSet<>();
-            authorities.add(authorityRepository.findByRole("ADMIN").orElseThrow(
-                    () -> new ResourceNotFoundException("Authority", "role", 1L)
+            authorities.add(authorityRepository.findByRole("ROLE_ADMIN").orElseThrow(
+                    () -> new AuthorityNotFoundException("ROLE_ADMIN")
             ));
             User admin = User.builder()
                     .username("admin")
@@ -73,35 +74,19 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void loadUsersFromCsv() throws FileNotFoundException {
-        if (userRepository.count() < 10) {
+        if (userRepository.count() < 2) {
             File file = ResourceUtils.getFile("classpath:dummydata/random_user_accounts.csv");
-
             List<UserCSVRecord> recs = userCSVService.convertCSV(file);
 
             Random random = new Random();
+
+            // List of available competencies
             List<Competency> competencyList = createCompetencySet();
 
+            // iterate through records in the CSV
             recs.forEach(userCSVRecord -> {
 
-                Set<Competency> competencies = new HashSet<>();
-                for (int i = 0; i < 3; i++) {
-                    competencies.add(
-                            competencyRepository.findByName(
-                                            competencyList.get(
-                                                    random.nextInt(competencyList.size())
-                                            ).getName())
-                                    .orElseThrow(
-                                            () -> new ResourceNotFoundException("Competency", "name", 1L))
-                    );
-                }
-
-                Set<Authority> authorities = new HashSet<>();
-                authorities.add(authorityRepository.findByRole("USER").orElseThrow(
-                        () -> new ResourceNotFoundException("Authority", "role", 1L)
-                ));
-
-
-
+                // Build user object
                 User user = User.builder()
                         .username(userCSVRecord.getUsername())
                         .firstName(userCSVRecord.getFirstName())
@@ -110,11 +95,25 @@ public class DataInitializer implements CommandLineRunner {
                         .password(passwordEncoder.encode(userCSVRecord.getPassword()))
                         .build();
 
-                for (Authority authority : authorities)
-                    user.addAuthority(authority);
+                // Add three random competencies
+                for (int i = 0; i < 3; i++) {
+                    // Get random competency
+                    Competency randomCompetency = competencyList.get(random.nextInt(competencyList.size()));
+                    Competency newCompetency = Competency.builder()
+                            .name(randomCompetency.getName())
+                            .description(randomCompetency.getDescription())
+                            .build();
 
-                for (Competency competency : competencies)
-                    user.addCompetency(competency);
+                    // Add it to the user
+                    user.addCompetency(newCompetency);
+                }
+
+                // Add the ROLE_USER role to the user object
+                Authority userAuthority = authorityRepository.findByRole("ROLE_USER").orElseThrow(
+                        () -> new AuthorityNotFoundException("USER")
+                );
+
+                user.addAuthority(userAuthority);
 
                 userRepository.save(user);
 
@@ -228,8 +227,6 @@ public class DataInitializer implements CommandLineRunner {
                 .name("Data Analysis")
                 .description("Proficiency in analyzing and interpreting data")
                 .build());
-
-        competencyRepository.saveAll(competencyList);
 
         return competencyList;
     }

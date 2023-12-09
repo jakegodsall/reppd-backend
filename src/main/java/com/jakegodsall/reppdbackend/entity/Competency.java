@@ -21,7 +21,7 @@ public class Competency extends BaseEntity {
     @OneToMany(mappedBy = "competency")
     private Set<Activity> activities = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -5,6 +5,7 @@ import com.jakegodsall.reppdbackend.service.CompetencyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,6 +23,7 @@ public class CompetencyController {
 
     private final CompetencyService competencyService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(API_V1_LIST)
     public ResponseEntity<List<CompetencyDto>> getAllCompetencies() {
         List<CompetencyDto> competencyDtos = competencyService.getAllCompetencies();

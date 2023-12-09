@@ -5,6 +5,7 @@ import com.jakegodsall.reppdbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -14,11 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 public class UserController {
-    private static final String API_V1_LIST = "/api/v1/users";
-    private static final String API_V1_LIST_ID = API_V1_LIST + "/{id}";
+    public static final String API_V1_LIST = "/api/v1/users";
+    public static final String API_V1_LIST_ID = API_V1_LIST + "/{id}";
 
-    private final UserService userService;
+    public final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(API_V1_LIST)
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> allUsers = userService.getAllUsers();
@@ -37,6 +39,7 @@ public class UserController {
         return ResponseEntity.created(location).body(createdUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(API_V1_LIST_ID)
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         UserDto user = userService.getUserById(id);
@@ -52,6 +55,7 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(API_V1_LIST_ID)
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);

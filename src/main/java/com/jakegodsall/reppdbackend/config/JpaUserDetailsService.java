@@ -1,13 +1,10 @@
-package com.jakegodsall.reppdbackend.security;
+package com.jakegodsall.reppdbackend.config;
 
 import com.jakegodsall.reppdbackend.entity.auth.Authority;
 import com.jakegodsall.reppdbackend.entity.auth.User;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
