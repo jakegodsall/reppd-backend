@@ -29,10 +29,13 @@ public class CompetencyServiceImpl implements CompetencyService {
 
     @Override
     public List<CompetencyDto> getAllCompetenciesForUser(Long userId) {
-        return competencyRepository.findAllByUserId(userId)
+        List<CompetencyDto> competencies =  competencyRepository.findAllByUserId(userId)
                 .stream()
                 .map(competencyMapper::competencyToCompetencyDto)
                 .toList();
+
+        System.out.println(competencies);
+        return competencies;
     }
 
 

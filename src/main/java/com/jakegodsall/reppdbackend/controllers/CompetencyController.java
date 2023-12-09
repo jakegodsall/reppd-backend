@@ -23,13 +23,6 @@ public class CompetencyController {
 
     private final CompetencyService competencyService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping(API_V1_LIST)
-    public ResponseEntity<List<CompetencyDto>> getAllCompetencies() {
-        List<CompetencyDto> competencyDtos = competencyService.getAllCompetencies();
-        return new ResponseEntity<>(competencyDtos, HttpStatus.OK);
-    }
-
     @GetMapping(API_V1_USER_LIST)
     public ResponseEntity<List<CompetencyDto>> getAllCompetenciesForUser(@PathVariable Long userId) {
         List<CompetencyDto> usersCompetencies = competencyService.getAllCompetenciesForUser(userId);

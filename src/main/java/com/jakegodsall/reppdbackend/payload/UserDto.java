@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
-@EqualsAndHashCode @ToString
 @Builder
 public class UserDto {
 
@@ -27,4 +26,9 @@ public class UserDto {
     private String email;
 
     private String password;
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", username, password);
+    }
 }
