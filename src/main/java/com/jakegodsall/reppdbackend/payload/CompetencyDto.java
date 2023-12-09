@@ -16,8 +16,7 @@ public class CompetencyDto {
     private LocalDateTime lastModifiedDate;
     private String name;
     private String description;
-    @JsonIgnore
-    private User user;
+    private Long userId;
 
     @Override
     public String toString() {
