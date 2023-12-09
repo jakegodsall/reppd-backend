@@ -19,5 +19,9 @@ public class ResourceNotFoundException extends RuntimeException {
                 "%s: %s not found for resource %s.\n",
                 fieldName, fieldValue, resourceName
         ));
+
+        this.resourceName = resourceName;
+        this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
     }
 }
