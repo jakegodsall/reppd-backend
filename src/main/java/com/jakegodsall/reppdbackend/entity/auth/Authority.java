@@ -17,18 +17,18 @@ import java.util.Set;
 @Table(name = "authority")
 public class Authority extends BaseEntity {
 
-    private String role;
+    private String permission;
 
     @Builder.Default
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     public Authority(String role) {
-        this.role = role;
+        this.permission = role;
     }
 
     @Override
     public String toString() {
-        return role;
+        return permission;
     }
 }

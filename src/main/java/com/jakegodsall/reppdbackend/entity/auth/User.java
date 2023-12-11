@@ -29,6 +29,13 @@ public class User extends BaseEntity {
 
     private String password;
 
+    @Singular
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
     @ManyToMany
     @JoinTable(name = "user_authority",
         joinColumns = @JoinColumn(name = "user_id"),

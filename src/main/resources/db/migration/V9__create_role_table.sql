@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS authority (
+CREATE TABLE IF NOT EXISTS role (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     created_date TIMESTAMP,
     last_modified_date TIMESTAMP,
     version BIGINT DEFAULT 0,
-    permission VARCHAR(255)
+    name VARCHAR(255) NOT NULL
 );

@@ -10,6 +10,7 @@ import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
+import com.sun.source.doctree.AuthorTree;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -40,10 +41,14 @@ public class DataInitializer implements CommandLineRunner {
 
 
     private void setAuthorities() {
+        // major roles
         if (authorityRepository.count() == 0) {
             authorityRepository.save(new Authority("ROLE_USER"));
             authorityRepository.save(new Authority("ROLE_ADMIN"));
         }
+
+        // user authorisation
+        Authority createUser = authorityRepository.save(Authority.builder().permission("user.create").build());
     }
 
     private void createAdminUser() {
