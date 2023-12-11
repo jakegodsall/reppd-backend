@@ -54,7 +54,7 @@ public class DataInitializer implements CommandLineRunner {
     private void createAdminUser() {
         if (userRepository.count() < 2) {
             Set<Authority> authorities = new HashSet<>();
-            authorities.add(authorityRepository.findByRole("ROLE_ADMIN").orElseThrow(
+            authorities.add(authorityRepository.findByPermission("ROLE_ADMIN").orElseThrow(
                     () -> new AuthorityNotFoundException("ROLE_ADMIN")
             ));
             User admin = User.builder()
@@ -114,7 +114,7 @@ public class DataInitializer implements CommandLineRunner {
                 }
 
                 // Add the ROLE_USER role to the user object
-                Authority userAuthority = authorityRepository.findByRole("ROLE_USER").orElseThrow(
+                Authority userAuthority = authorityRepository.findByPermission("ROLE_USER").orElseThrow(
                         () -> new AuthorityNotFoundException("USER")
                 );
 
