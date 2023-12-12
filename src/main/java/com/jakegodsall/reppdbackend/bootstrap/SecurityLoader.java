@@ -7,6 +7,7 @@ import com.jakegodsall.reppdbackend.exceptions.RoleNotFoundException;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
 import com.jakegodsall.reppdbackend.repository.security.RoleRepository;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -29,6 +30,7 @@ public class SecurityLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
         setAuthoritiesAndRoles();
@@ -50,18 +52,22 @@ public class SecurityLoader implements CommandLineRunner {
                 deleteUser
         ));
 
-        // Competency resource
+        // Competency resource (admin)
         Authority createCompetency = new Authority("CREATE_COMPETENCY");
         Authority readCompetency = new Authority("READ_COMPETENCY");
         Authority updateCompetency = new Authority("UPDATE_COMPETENCY");
         Authority deleteCompetency = new Authority("DELETE_COMPETENCY");
 
+        // Competency resource (user)
+        Authority createCompetencyUser = new Authority("USER_CREATE_COMPETENCY");
+        Authority readCompetencyUser = new Authority("USER_READ_COMPETENCY");
+        Authority updateCompetencyUser = new Authority("USER_UPDATE_COMPETENCY");
+        Authority deleteCompetencyUser = new Authority("USER_DELETE_COMPETENCY");
+
         // Store Competency authorities in the db
         authorityRepository.saveAll(List.of(
-                createCompetency,
-                readCompetency,
-                updateCompetency,
-                deleteCompetency
+                createCompetency, readCompetency, updateCompetency, deleteCompetency,
+                createCompetencyUser, readCompetencyUser, updateCompetencyUser, deleteCompetencyUser
         ));
 
 
@@ -77,7 +83,10 @@ public class SecurityLoader implements CommandLineRunner {
         )));
 
         userRole.setAuthorities(new HashSet<>(Set.of(
-                readCompetency
+                createCompetencyUser,
+                readCompetencyUser,
+                updateCompetencyUser,
+                deleteCompetencyUser
         )));
 
         // Store Roles in the db
