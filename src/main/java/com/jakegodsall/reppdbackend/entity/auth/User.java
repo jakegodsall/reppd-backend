@@ -30,16 +30,17 @@ public class User extends BaseEntity {
     private String password;
 
     @Singular
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-               joinColumns = @JoinColumn(name = "user_id"),
-               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "user_authority",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    @Transient
     private Set<Authority> authorities = new HashSet<>();
 
     @Builder.Default
@@ -58,12 +59,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Competency> competencies = new HashSet<>();
 
-    public void addAuthority(Authority authority) {
-        if (authorities == null)
-            authorities = new HashSet<>();
-        authorities.add(authority);
-        authority.getUsers().add(this);
-    }
 
     public void addCompetency(Competency competency) {
         if (competencies == null)

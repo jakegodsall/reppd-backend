@@ -8,12 +8,14 @@ import com.jakegodsall.reppdbackend.exceptions.AuthorityNotFoundException;
 import com.jakegodsall.reppdbackend.exceptions.ResourceNotFoundException;
 import com.jakegodsall.reppdbackend.repository.CompetencyRepository;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
+import com.jakegodsall.reppdbackend.repository.security.RoleRepository;
 import com.jakegodsall.reppdbackend.repository.security.UserRepository;
 import com.jakegodsall.reppdbackend.csvservice.UserCSVService;
 import com.sun.source.doctree.AuthorTree;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -23,111 +25,72 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 @AllArgsConstructor
+@Order(2)
 @Component
 public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final UserCSVService userCSVService;
     private final AuthorityRepository authorityRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CompetencyRepository competencyRepository;
 
 
     @Override
     public void run(String... args) throws Exception {
-        setAuthorities();
-        createAdminUser();
-        loadUsersFromCsv();
+//        loadUsersFromCsv();
     }
 
 
-    private void setAuthorities() {
-        // major roles
-        if (authorityRepository.count() == 0) {
-            authorityRepository.save(new Authority("ROLE_USER"));
-            authorityRepository.save(new Authority("ROLE_ADMIN"));
-        }
-
-        // user authorisation
-        Authority createUser = authorityRepository.save(Authority.builder().permission("user.create").build());
-    }
-
-    private void createAdminUser() {
-        if (userRepository.count() < 2) {
-            Set<Authority> authorities = new HashSet<>();
-            authorities.add(authorityRepository.findByPermission("ROLE_ADMIN").orElseThrow(
-                    () -> new AuthorityNotFoundException("ROLE_ADMIN")
-            ));
-            User admin = User.builder()
-                    .username("admin")
-                    .firstName("adminname")
-                    .lastName("adminlastname")
-                    .email("admin_email@email.com")
-                    .password(passwordEncoder.encode("password"))
-                    .build();
-
-            for (Authority authority : authorities) {
-                admin.addAuthority(authority);
-            }
-
-            userRepository.save(admin);
-
-            System.out.println("Admin user added");
-
-            System.out.println("User: " + admin.getUsername());
-            System.out.println("Authorities: " + admin.getAuthorities() );
-        }
-    }
-
-    private void loadUsersFromCsv() throws FileNotFoundException {
-        if (userRepository.count() < 2) {
-            File file = ResourceUtils.getFile("classpath:dummydata/random_user_accounts.csv");
-            List<UserCSVRecord> recs = userCSVService.convertCSV(file);
-
-            Random random = new Random();
-
-            // List of available competencies
-            List<Competency> competencyList = createCompetencySet();
-
-            // iterate through records in the CSV
-            recs.forEach(userCSVRecord -> {
-
-                // Build user object
-                User user = User.builder()
-                        .username(userCSVRecord.getUsername())
-                        .firstName(userCSVRecord.getFirstName())
-                        .lastName(userCSVRecord.getLastName())
-                        .email(userCSVRecord.getEmail())
-                        .password(passwordEncoder.encode(userCSVRecord.getPassword()))
-                        .build();
-
-                // Add three random competencies
-                for (int i = 0; i < 3; i++) {
-                    // Get random competency
-                    Competency randomCompetency = competencyList.get(random.nextInt(competencyList.size()));
-                    Competency newCompetency = Competency.builder()
-                            .name(randomCompetency.getName())
-                            .description(randomCompetency.getDescription())
-                            .build();
-
-                    // Add it to the user
-                    user.addCompetency(newCompetency);
-                }
-
-                // Add the ROLE_USER role to the user object
-                Authority userAuthority = authorityRepository.findByPermission("ROLE_USER").orElseThrow(
-                        () -> new AuthorityNotFoundException("USER")
-                );
-
-                user.addAuthority(userAuthority);
-
-                userRepository.save(user);
-
-                System.out.println("User: " + user.getUsername());
-                System.out.println("Authorities: " + user.getAuthorities());
-                System.out.println("Competencies: " + user.getCompetencies());
-            });
-        }
-    }
+//    private void loadUsersFromCsv() throws FileNotFoundException {
+//        if (userRepository.count() < 2) {
+//            File file = ResourceUtils.getFile("classpath:dummydata/random_user_accounts.csv");
+//            List<UserCSVRecord> recs = userCSVService.convertCSV(file);
+//
+//            Random random = new Random();
+//
+//            // List of available competencies
+//            List<Competency> competencyList = createCompetencySet();
+//
+//            // iterate through records in the CSV
+//            recs.forEach(userCSVRecord -> {
+//
+//                // Build user object
+//                User user = User.builder()
+//                        .username(userCSVRecord.getUsername())
+//                        .firstName(userCSVRecord.getFirstName())
+//                        .lastName(userCSVRecord.getLastName())
+//                        .email(userCSVRecord.getEmail())
+//                        .password(passwordEncoder.encode(userCSVRecord.getPassword()))
+//                        .build();
+//
+//                // Add three random competencies
+//                for (int i = 0; i < 3; i++) {
+//                    // Get random competency
+//                    Competency randomCompetency = competencyList.get(random.nextInt(competencyList.size()));
+//                    Competency newCompetency = Competency.builder()
+//                            .name(randomCompetency.getName())
+//                            .description(randomCompetency.getDescription())
+//                            .build();
+//
+//                    // Add it to the user
+//                    user.addCompetency(newCompetency);
+//                }
+//
+//                // Add the ROLE_USER role to the user object
+//                Authority userAuthority = authorityRepository.findByPermission("ROLE_USER").orElseThrow(
+//                        () -> new AuthorityNotFoundException("USER")
+//                );
+//
+//                user.addAuthority(userAuthority);
+//
+//                userRepository.save(user);
+//
+//                System.out.println("User: " + user.getUsername());
+//                System.out.println("Authorities: " + user.getAuthorities());
+//                System.out.println("Competencies: " + user.getCompetencies());
+//            });
+//        }
+//    }
 
     private List<Competency> createCompetencySet() {
 

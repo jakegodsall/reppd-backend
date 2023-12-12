@@ -19,16 +19,16 @@ public class Authority extends BaseEntity {
 
     private String permission;
 
-    @Builder.Default
-    @ManyToMany(mappedBy = "authorities", fetch = FetchType.EAGER)
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "authorities")
+    private Set<Role> roles;
 
-    public Authority(String role) {
-        this.permission = role;
+    public Authority(String permission) {
+        this.permission = permission;
     }
 
     @Override
     public String toString() {
         return permission;
     }
+
 }

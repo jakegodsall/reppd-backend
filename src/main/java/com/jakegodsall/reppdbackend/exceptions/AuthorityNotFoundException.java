@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter @Setter
 public class AuthorityNotFoundException extends RuntimeException {
 
-    private String roleName;
+    private String permission;
 
-    public AuthorityNotFoundException(String roleName) {
-        super(String.format("Role %s not found.\n", roleName));
-        this.roleName = roleName;
+    public AuthorityNotFoundException(String permission) {
+        super(String.format("Authority %s not found.\n", permission));
+        this.permission = permission;
     }
 }
