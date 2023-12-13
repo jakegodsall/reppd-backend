@@ -2,6 +2,7 @@ package com.jakegodsall.reppdbackend.entity;
 
 import com.jakegodsall.reppdbackend.entity.auth.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -13,9 +14,11 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private LocalDate date;
 
-    private Long value;
+    @NotNull
+    private Long value = 0L;
 
     @ManyToOne
     @JoinColumn(name = "activity_id")

@@ -2,6 +2,8 @@ package com.jakegodsall.reppdbackend.entity.auth;
 
 import com.jakegodsall.reppdbackend.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Set;
@@ -12,7 +14,14 @@ import java.util.Set;
 @Setter
 @Builder
 @Entity
+@Table(name = "role", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name"})
+})
 public class Role extends BaseEntity {
+
+    @Size(max = 50)
+    @NotNull
+    @Column(length = 50, nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "roles")

@@ -2,6 +2,8 @@ package com.jakegodsall.reppdbackend.entity;
 
 import com.jakegodsall.reppdbackend.entity.auth.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.HashSet;
@@ -15,7 +17,15 @@ import java.util.Set;
 @Entity
 @Table(name = "competency")
 public class Competency extends BaseEntity {
+
+    @Size(max = 100)
+    @NotNull
+    @Column(length = 100, nullable = false)
     private String name;
+
+    @Size(max = 1000)
+    @NotNull
+    @Column(length = 1000, nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "competency")

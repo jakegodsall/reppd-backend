@@ -1,8 +1,12 @@
-CREATE TABLE IF NOT EXISTS competency (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    created_date TIMESTAMP,
+DROP TABLE IF EXISTS competency;
+
+CREATE TABLE competency
+(
+    id                 BIGINT        NOT NULL UNIQUE AUTO_INCREMENT,
+    created_date       TIMESTAMP,
     last_modified_date TIMESTAMP,
-    version BIGINT DEFAULT 0,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    version            BIGINT DEFAULT 0,
+    name               VARCHAR(100)  NOT NULL,
+    description        VARCHAR(1000) NOT NULL,
+    PRIMARY KEY (id)
 );

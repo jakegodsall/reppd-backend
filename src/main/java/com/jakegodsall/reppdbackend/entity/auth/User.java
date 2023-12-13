@@ -4,6 +4,9 @@ import com.jakegodsall.reppdbackend.entity.BaseEntity;
 import com.jakegodsall.reppdbackend.entity.Competency;
 import com.jakegodsall.reppdbackend.repository.security.AuthorityRepository;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,17 +19,35 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username", "email"})
+})
 public class User extends BaseEntity {
 
+    @Size(max = 100)
+    @NotNull
+    @Column(length = 100, nullable = false, unique = true)
     private String username;
 
+    @Size(max = 100)
+    @NotNull
+    @Column(length = 100, nullable = false)
     private String firstName;
 
+    @Size(max = 100)
+    @NotNull
+    @Column(length = 100, nullable = false)
     private String lastName;
 
+    @Size(max = 100)
+    @Email(message = "Invalid email format")
+    @NotNull
+    @Column(length = 100, nullable = false, unique = true)
     private String email;
 
+    @Size(max=255)
+    @NotNull
+    @Column(length = 255, nullable = false)
     private String password;
 
     @Singular

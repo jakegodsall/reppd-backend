@@ -1,7 +1,11 @@
-CREATE TABLE IF NOT EXISTS authority (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    created_date TIMESTAMP,
+DROP TABLE IF EXISTS authority;
+
+CREATE TABLE authority
+(
+    id                 BIGINT      NOT NULL AUTO_INCREMENT,
+    created_date       TIMESTAMP,
     last_modified_date TIMESTAMP,
-    version BIGINT DEFAULT 0,
-    permission VARCHAR(255)
+    version            BIGINT DEFAULT 0,
+    permission         VARCHAR(50) NOT NULL UNIQUE,
+    PRIMARY KEY (id)
 );

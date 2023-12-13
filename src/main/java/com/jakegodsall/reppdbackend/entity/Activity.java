@@ -1,20 +1,18 @@
 package com.jakegodsall.reppdbackend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@Builder
 @Entity
 @Table(name = "activity")
 public class Activity extends BaseEntity {
+
+    @Column(length = 100, nullable = false)
     private String name;
 
     @ManyToOne

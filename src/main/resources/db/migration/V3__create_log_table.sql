@@ -1,12 +1,16 @@
-CREATE TABLE IF NOT EXISTS log (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    created_date TIMESTAMP,
-    last_modified_date TIMESTAMP,
-    version BIGINT DEFAULT 0,
-    date DATE,
-    value BIGINT DEFAULT 0,
-    activity_id BIGINT
+DROP TABLE IF EXISTS log;
+
+CREATE TABLE log
+(
+    id                 BIGINT    NOT NULL UNIQUE AUTO_INCREMENT,
+    created_date       TIMESTAMP,
+    last_modified_date TIMESTAMP NOT NULL,
+    version            BIGINT    NOT NULL DEFAULT 0,
+    date               DATE      NOT NULL,
+    value              BIGINT             DEFAULT 0,
+    activity_id        BIGINT,
+    PRIMARY KEY (id)
 );
 
 ALTER TABLE log
-ADD FOREIGN KEY (activity_id) REFERENCES activity(id);
+    ADD FOREIGN KEY (activity_id) REFERENCES activity (id);

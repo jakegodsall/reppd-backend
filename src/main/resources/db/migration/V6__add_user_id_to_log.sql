@@ -1,5 +1,6 @@
 ALTER TABLE log
-ADD COLUMN user_id BIGINT;
+    ADD COLUMN user_id BIGINT NOT NULL;
+
 
 ALTER TABLE log
-ADD FOREIGN KEY (user_id) REFERENCES user(id);
+    ADD FOREIGN KEY (user_id) REFERENCES user (id);
